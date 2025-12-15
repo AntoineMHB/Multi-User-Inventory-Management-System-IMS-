@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>My Inventory</title>
+  </head>
+  <body>
+    <script>
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <div class="container">
+      <button class="logout" onclick="logout()">Logout</button>
+
+      <h2>Welcome, <span id="userName"></span></h2>
+
+      <h3>Add / Edit Item</h3>
+
+      <form id="itemForm">
+        <input type="hidden" id="editIndex" />
+
+        <input type="text" id="name" placeholder="Item Name" required />
+        <input type="number" id="quantity" placeholder="Quantity" required />
+        <input type="number" id="price" placeholder="Price" required />
+
+        <select id="status" required>
+          <option value="">Select Status</option>
+          <option value="Available">Available</option>
+          <option value="Out of Stock">Out of Stock</option>
+          <option value="Pending">Pending</option>
+        </select>
+
+        <button type="submit">Save Item</button>
+      </form>
+
+      <h3>My Inventory</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="inventoryTable"></tbody>
+      </table>
+    </div>
+
+    <script src="inventory.js"></script>
+  </body>
+</html>
