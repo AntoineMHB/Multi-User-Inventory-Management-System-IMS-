@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Admin Panel</title>
+  </head>
+  <body>
+    <script>
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (!user || user.username !== "ADMIN") {
+        alert("Access denied");
+        window.location.href = "loginPage.html";
+      }
+    </script>
+
+    <div class="container">
+      <button class="logout" onclick="logout()">Logout</button>
+      <h2>Admin Panel</h2>
+
+      <!-- SECTION A: Manage Users -->
+      <h3>Manage Users</h3>
+
+      <!-- Add new user form -->
+      <form id="addUserForm">
+        <input type="hidden" id="editUserIndex" />
+        <input type="text" id="newUsername" placeholder="Username" required />
+        <input type="text" id="newFullName" placeholder="Full Name" required />
+        <input
+          type="number"
+          id="newPhoneNumber"
+          placeholder="Phone number"
+          required
+        />
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Password"
+          required
+        />
+        <!-- <select id="newRole" required>
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select> -->
+        <button type="submit">Add / Update User</button>
+      </form>
+
+      <!-- Search users -->
+      <input
+        type="text"
+        id="searchUserInput"
+        placeholder="Search users by username..."
+      />
+
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Full Name</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody id="usersTable"></tbody>
+      </table>
+
+      <!-- SECTION B: View All Inventory Items -->
+      <h3>All Inventory Items</h3>
+
+      <!-- Filters -->
+      <input
+        type="text"
+        id="searchInventoryInput"
+        placeholder="Search items..."
+      />
+      <select id="filterUserSelect">
+        <option value="">All Users</option>
+      </select>
+      <select id="filterStatusSelect">
+        <option value="">All Status</option>
+        <option value="Available">Available</option>
+        <option value="Out of Stock">Out of Stock</option>
+        <option value="Pending">Pending</option>
+      </select>
+
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="allInventoryTable"></tbody>
+      </table>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

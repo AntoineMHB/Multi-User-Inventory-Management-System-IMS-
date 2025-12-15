@@ -12,6 +12,10 @@ inventories[username] = inventories[username] || [];
 const form = document.getElementById("itemForm");
 const table = document.getElementById("inventoryTable");
 
+// search variables
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+
 function validate(name, quantity, price, status) {
   if (!/^[A-Za-z ]+$/.test(name)) {
     alert("Name must contain only letters");
@@ -30,20 +34,31 @@ function validate(name, quantity, price, status) {
 
 function render() {
   table.innerHTML = "";
-  inventories[username].forEach((item, index) => {
-    table.innerHTML += `
-      <tr>
-        <td>${item.name}</td>
-        <td>${item.quantity}</td>
-        <td>${item.price}</td>
-        <td>${item.status}</td>
-        <td class="actions">
-          <button onclick="editItem(${index})">Edit</button>
-          <button onclick="deleteItem(${index})">Delete</button>
-        </td>
-      </tr>
-    `;
-  });
+
+  // 🔍 ADDED: get search & filter values
+  const searchText = searchInput.value.toLowerCase();
+  const statusValue = statusFilter.value;
+
+  inventories[username]
+    .filter((item) => {
+      const matchesName = item.name.toLowerCase().includes(searchText);
+      const matchesStatus = statusValue === "" || item.status === statusValue;
+      return matchesName && matchesStatus;
+    })
+    .forEach((item, index) => {
+      table.innerHTML += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.quantity}</td>
+          <td>${item.price}</td>
+          <td>${item.status}</td>
+          <td class="actions">
+            <button onclick="editItem(${index})">Edit</button>
+            <button onclick="deleteItem(${index})">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
 }
 
 form.addEventListener("submit", (e) => {
@@ -92,5 +107,8 @@ function logout() {
   localStorage.removeItem("loggedInUser");
   window.location.href = "login.html";
 }
+
+searchInput.addEventListener("input", render);
+statusFilter.addEventListener("change", render);
 
 render();

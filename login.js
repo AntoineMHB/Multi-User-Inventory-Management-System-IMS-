@@ -17,7 +17,12 @@ loginForm.addEventListener("submit", function (e) {
   if (validUser) {
     localStorage.setItem("loggedInUser", JSON.stringify(validUser));
     alert("User logged in successfully");
-    window.location.href = "inventoryPage.html";
+
+    if (validUser.username === "ADMIN") {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "inventoryPage.html";
+    }
   } else {
     alert("Invalid credentials");
   }
